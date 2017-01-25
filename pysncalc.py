@@ -66,16 +66,18 @@ def gen_subnet_data(ip, mask):
     last_usable = dec2ip(ip2dec(bcast) - 1)
     next_network_addr = dec2ip(ip2dec(bcast) + 1)
 
-    print("================================")
-    print("        {0}/{1}".format(net, str(cidr)))
-    print("================================")
-    print("Network Address:   {0}".format(net))
-    print("Subnet Mask:       {0}".format(mask))
-    print("Broadcast Address: {0}".format(bcast))
-    print("Usable Hosts:      {0}".format(num_hosts))
-    print("Usable Host Range: {0} - {1}".format(first_usable, last_usable))
-    print("================================")
+    net_data_str = ""
+    net_data_str += "================================\n"
+    net_data_str += "        {0}/{1}\n".format(net, str(cidr))
+    net_data_str += "================================\n"
+    net_data_str += "Network Address:   {0}\n".format(net)
+    net_data_str += "Subnet Mask:       {0}\n".format(mask)
+    net_data_str += "Broadcast Address: {0}\n".format(bcast)
+    net_data_str += "Usable Hosts:      {0}\n".format(num_hosts)
+    net_data_str += "Usable Host Range: {0} - {1}\n".format(first_usable, last_usable)
+    net_data_str += "================================"
 
+    print net_data_str
     return next_network_addr
 
 def gen_subnet_data_cidr(ip_cidr):
