@@ -60,11 +60,15 @@ def get_num_hosts(mask):
 def gen_subnet_data(ip, mask):
     net = get_network_addr(ip, mask)
     bcast = get_bcast_addr(ip, mask)
+    cidr = mask2cidr(mask)
     num_hosts = get_num_hosts(mask)
     first_usable = dec2ip(ip2dec(net) + 1)
     last_usable = dec2ip(ip2dec(bcast) - 1)
     next_network_addr = dec2ip(ip2dec(bcast) + 1)
 
+    print("================================")
+    print("        {0}/{1}".format(net, str(cidr)))
+    print("================================")
     print("Network Address:   {0}".format(net))
     print("Subnet Mask:       {0}".format(mask))
     print("Broadcast Address: {0}".format(bcast))
@@ -94,13 +98,20 @@ def gen_new_subnet(base_ip, base_mask, num_hosts):
         return 0
 
 def gen_new_subnets_multi(base_ip, base_mask, num_hosts_list):
+    orig_base = base_ip
+    orig_mask = base_mask
+
     for num_hosts in num_hosts_list:
+        if base_ip == 0:
+            return 0
+
+        elif ip2dec(base_ip) > ip2dec(get_bcast_addr(orig_base, orig_mask)):
+            print("Not possible to subnet! Too many addressses needed for the given base address!") 
+            return 0
+
         next_base = gen_new_subnet(base_ip, base_mask, num_hosts)
         base_ip = next_base[0]
         base_mask = next_base[1]
-
-        if base_ip == 0:
-            return 0
 
 def gen_new_subnet_cidr(base_ip_cidr, num_hosts):
     base_ip = base_ip_cidr.split('/')[0]
